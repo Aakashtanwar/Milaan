@@ -2,10 +2,13 @@
 const en = {
   appName: 'Milaan',
   welcome: {
-    tagline: 'Everyone here is real and verified',
-    quality: 'Quality over quantity — 5 matches at a time',
-    privacy: 'Your data is protected. Your ID is never shared with matches.',
+    eyebrow: 'Verified dating · India',
+    heroTitle: 'Real people.\nReal connections.',
+    tagline: 'Everyone is ID-verified',
+    quality: 'Five matches at a time',
+    privacy: 'Your ID is never shared',
     getStarted: 'Get started',
+    haveAccount: 'I already have an account',
   },
   auth: {
     signInTitle: 'Enter your phone number',
