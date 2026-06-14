@@ -8,15 +8,18 @@ export type ButtonProps = Omit<PressableProps, 'children'> & {
   title: string;
   variant?: 'primary' | 'secondary' | 'ghost';
   loading?: boolean;
+  fullWidth?: boolean;
 };
 
 /**
- * Themed pressable button with large tap target (accessibility, Spec §10).
+ * Primary CTA: filled accent pill with a soft lift. Secondary: outlined.
+ * Ghost: text-only. Large tap target for accessibility (Spec §10).
  */
 export function Button({
   title,
   variant = 'primary',
   loading = false,
+  fullWidth = true,
   disabled,
   style,
   ...rest
@@ -37,11 +40,15 @@ export function Button({
         styles.base,
         {
           backgroundColor: bg,
-          borderRadius: theme.radii.md,
-          borderWidth: variant === 'secondary' ? 1 : 0,
-          borderColor: theme.colors.border,
-          opacity: isDisabled ? 0.5 : state.pressed ? 0.85 : 1,
+          borderRadius: theme.radii.pill,
+          borderWidth: variant === 'secondary' ? 1.5 : 0,
+          borderColor: theme.colors.accent,
+          alignSelf: fullWidth ? 'stretch' : 'center',
+          paddingHorizontal: fullWidth ? 24 : 36,
+          opacity: isDisabled ? 0.45 : 1,
+          transform: [{ scale: state.pressed ? 0.98 : 1 }],
         },
+        variant === 'primary' && !isDisabled ? theme.shadow.button : null,
         typeof style === 'function' ? style(state) : style,
       ]}
       {...rest}
@@ -49,7 +56,7 @@ export function Button({
       {loading ? (
         <ActivityIndicator color={fg} />
       ) : (
-        <Text variant="label" style={{ color: fg }}>
+        <Text variant="heading" style={{ color: fg, fontSize: 16 }}>
           {title}
         </Text>
       )}
@@ -59,8 +66,7 @@ export function Button({
 
 const styles = StyleSheet.create({
   base: {
-    minHeight: 52, // large tap target
-    paddingHorizontal: 20,
+    minHeight: 56,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -3,10 +3,14 @@ import { View, type ViewProps } from 'react-native';
 
 import { useTheme } from '@/lib/theme';
 
-export type CardProps = ViewProps & { children: ReactNode };
+export type CardProps = ViewProps & {
+  children: ReactNode;
+  /** Add a soft elevation shadow (default true). */
+  elevated?: boolean;
+};
 
-/** Rounded, bordered surface — the core container of the design system. */
-export function Card({ children, style, ...rest }: CardProps) {
+/** Soft, rounded white surface — the core container of the design system. */
+export function Card({ children, elevated = true, style, ...rest }: CardProps) {
   const theme = useTheme();
   return (
     <View
@@ -14,11 +18,10 @@ export function Card({ children, style, ...rest }: CardProps) {
         {
           backgroundColor: theme.colors.surface,
           borderRadius: theme.radii.lg,
-          borderWidth: 1,
-          borderColor: theme.colors.border,
           padding: theme.spacing.lg,
           gap: theme.spacing.sm,
         },
+        elevated ? theme.shadow.card : { borderWidth: 1, borderColor: theme.colors.border },
         style,
       ]}
       {...rest}

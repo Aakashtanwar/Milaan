@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 
 import { useTheme } from '@/lib/theme';
@@ -5,20 +6,25 @@ import { useTheme } from '@/lib/theme';
 import { Text } from './Text';
 
 /**
- * The "verified ✓" motif, used consistently anywhere a user's verification is
- * surfaced (Spec §10). Phase 0: a simple pill; swap glyph for an icon later.
+ * The "verified ✓" motif, used consistently wherever verification is surfaced
+ * (Spec §10). Two tones: a soft pill, or a compact tick for use over photos.
  */
-export function VerifiedBadge({ label = 'Verified' }: { label?: string }) {
+export function VerifiedBadge({
+  label = 'Verified',
+  tone = 'soft',
+}: {
+  label?: string;
+  tone?: 'soft' | 'onPhoto';
+}) {
   const theme = useTheme();
+  if (tone === 'onPhoto') {
+    return <Ionicons name="checkmark-circle" size={20} color={theme.colors.verified} />;
+  }
   return (
-    <View
-      style={[
-        styles.pill,
-        { backgroundColor: theme.colors.verifiedSoft, borderRadius: theme.radii.pill },
-      ]}
-    >
+    <View style={[styles.pill, { backgroundColor: theme.colors.likeSoft, borderRadius: theme.radii.pill }]}>
+      <Ionicons name="checkmark-circle" size={14} color={theme.colors.verified} />
       <Text variant="caption" style={{ color: theme.colors.verified }}>
-        ✓ {label}
+        {label}
       </Text>
     </View>
   );
@@ -26,8 +32,11 @@ export function VerifiedBadge({ label = 'Verified' }: { label?: string }) {
 
 const styles = StyleSheet.create({
   pill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
     alignSelf: 'flex-start',
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 5,
   },
 });

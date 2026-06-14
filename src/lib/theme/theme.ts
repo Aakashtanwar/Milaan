@@ -1,37 +1,60 @@
 import { palette, radii, spacing, typography } from './tokens';
 
 /**
- * Semantic theme assembled from raw tokens. Components reference these
- * role-based names (`theme.colors.accent`) rather than raw palette values,
- * so a future dark theme or rebrand is a single-file change.
+ * Semantic theme assembled from raw tokens. Components reference role names
+ * (theme.colors.accent), never raw palette values — so a rebrand is one file.
  */
 export const lightTheme = {
   colors: {
-    accent: palette.saffron500,
-    accentPressed: palette.saffron600,
-    accentSoft: palette.saffron50,
-    secondary: palette.plum500,
+    // brand
+    accent: palette.accent,
+    accentDeep: palette.accentDeep,
+    accentSoft: palette.accentSoft,
+    marigold: palette.marigold,
+    marigoldSoft: palette.marigoldSoft,
 
-    verified: palette.verified500,
-    verifiedSoft: palette.verified100,
+    // action semantics
+    like: palette.like,
+    likeSoft: palette.likeSoft,
+    nope: palette.nope,
+    star: palette.star,
+    starSoft: palette.starSoft,
+    verified: palette.verified,
+    danger: palette.danger,
 
-    danger: palette.danger500,
-    dangerSoft: palette.danger100,
-    warning: palette.warning500,
+    // text
+    text: palette.ink,
+    textSecondary: palette.ink70,
+    textMuted: palette.ink50,
+    textOnAccent: palette.white,
+    textOnPhoto: palette.white,
 
-    text: palette.ink900,
-    textSecondary: palette.ink500,
-    textOnAccent: '#FFFFFF',
-    textDisabled: palette.ink300,
-
-    background: palette.surfaceAlt,
+    // surfaces
+    background: palette.paper,
+    backgroundDim: palette.paperDim,
     surface: palette.surface,
-    surfaceAlt: palette.surfaceAlt,
-    border: palette.border,
+    border: palette.hairline,
   },
   spacing,
   radii,
   typography,
+  /** Soft, low elevation — Hinge-style depth comes from light shadow + photos. */
+  shadow: {
+    card: {
+      shadowColor: '#2A1D12',
+      shadowOpacity: 0.1,
+      shadowRadius: 24,
+      shadowOffset: { width: 0, height: 12 },
+      elevation: 6,
+    },
+    button: {
+      shadowColor: '#2A1D12',
+      shadowOpacity: 0.18,
+      shadowRadius: 12,
+      shadowOffset: { width: 0, height: 6 },
+      elevation: 5,
+    },
+  },
 } as const;
 
 export type Theme = typeof lightTheme;

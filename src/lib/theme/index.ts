@@ -3,8 +3,8 @@ import { createContext, useContext } from 'react';
 import { lightTheme, type Theme } from './theme';
 
 /**
- * Theme context. Phase 0 ships a single light theme; the provider exists so a
- * dark theme can drop in later without touching consumers.
+ * Theme context. Phase 0 ships a single light editorial theme; the provider
+ * exists so a dark theme can drop in later without touching consumers.
  */
 const ThemeContext = createContext<Theme>(lightTheme);
 
@@ -15,5 +15,6 @@ export function useTheme(): Theme {
 }
 
 export { lightTheme };
+export { fontMap } from './fonts';
 export type { Theme };
 export * from './tokens';
