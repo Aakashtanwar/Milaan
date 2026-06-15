@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
 import { Avatar, Text, VerifiedBadge } from '@/components/ui';
 import { useOnboarding } from '@/state/onboarding';
@@ -25,7 +26,12 @@ const rows: Row[] = [
 export default function Profile() {
   const { t } = useTranslation();
   const theme = useTheme();
-  const signOut = useOnboarding((s) => s.reset);
+  const reset = useOnboarding((s) => s.reset);
+
+  function onSignOut() {
+    reset(); // phase → signed-out, clears onboarding draft
+    router.replace('/'); // re-run the gate → welcome
+  }
   const profile = useOnboarding((s) => s.profile);
   const photos = useOnboarding((s) => s.photos);
 
@@ -58,7 +64,7 @@ export default function Profile() {
           ))}
         </View>
 
-        <Pressable onPress={() => signOut()} style={styles.signOut}>
+        <Pressable onPress={onSignOut} style={styles.signOut}>
           <Text variant="label" color="danger">
             {t('profile.signOut')}
           </Text>

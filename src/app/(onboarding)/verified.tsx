@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -18,6 +19,11 @@ export default function Verified() {
   const theme = useTheme();
   const finishVerification = useOnboarding((s) => s.finishVerification);
 
+  function onStart() {
+    finishVerification(); // phase → verified
+    router.replace('/'); // re-run the gate → swipe deck
+  }
+
   return (
     <LinearGradient colors={[theme.colors.likeSoft, theme.colors.background]} style={styles.flex}>
       <SafeAreaView style={styles.flex} edges={['top', 'bottom']}>
@@ -33,7 +39,7 @@ export default function Verified() {
               {t('onboarding.verifiedBody')}
             </Text>
           </View>
-          <Button title={t('onboarding.startSwiping')} onPress={() => finishVerification()} />
+          <Button title={t('onboarding.startSwiping')} onPress={onStart} />
         </View>
       </SafeAreaView>
     </LinearGradient>
