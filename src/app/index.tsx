@@ -1,20 +1,18 @@
 import { Redirect } from 'expo-router';
 
-import { useSession } from '@/state/session';
+import { routeForStep, useOnboarding } from '@/state/onboarding';
 
 /**
- * Route gate. Sends the user to the right place based on session phase:
- *   signed-out  → (auth)        — phone/OTP
- *   onboarding  → (onboarding)  — the 4-step verification flow
- *   verified    → (main)        — the swipe deck
- *
- * Phase 0 reads a mocked session (src/state/session). Phase 1 swaps the source
- * for Supabase Auth + users.status without changing this gate.
+ * Route gate. Sends the user to the right place based on persisted state:
+ *   signed-out → (auth)/welcome
+ *   onboarding → the exact step they last reached (resume, Spec §4.11)
+ *   verified   → the swipe deck
  */
 export default function Index() {
-  const phase = useSession((s) => s.phase);
+  const phase = useOnboarding((s) => s.phase);
+  const step = useOnboarding((s) => s.step);
 
   if (phase === 'signed-out') return <Redirect href="/(auth)/welcome" />;
-  if (phase === 'onboarding') return <Redirect href="/(onboarding)/identity" />;
+  if (phase === 'onboarding') return <Redirect href={routeForStep(step) as never} />;
   return <Redirect href="/(main)/swipe" />;
 }

@@ -4,7 +4,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Avatar, Text, VerifiedBadge } from '@/components/ui';
-import { useSession } from '@/state/session';
+import { useOnboarding } from '@/state/onboarding';
 import { useTheme } from '@/lib/theme';
 
 type Row = { icon: keyof typeof Ionicons.glyphMap; label: string };
@@ -25,14 +25,21 @@ const rows: Row[] = [
 export default function Profile() {
   const { t } = useTranslation();
   const theme = useTheme();
-  const signOut = useSession((s) => s.signOut);
+  const signOut = useOnboarding((s) => s.reset);
+  const profile = useOnboarding((s) => s.profile);
+  const photos = useOnboarding((s) => s.photos);
+
+  const avatar = photos.find((p) => p.status === 'approved')?.uri ?? 'https://i.pravatar.cc/400?img=14';
+  const displayName = profile.name
+    ? `${profile.name}${profile.age ? `, ${profile.age}` : ''}`
+    : 'Your profile';
 
   return (
     <SafeAreaView style={[styles.flex, { backgroundColor: theme.colors.background }]} edges={['top']}>
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.head}>
-          <Avatar uri="https://i.pravatar.cc/400?img=14" size={104} verified />
-          <Text variant="display">Rohan, 28</Text>
+          <Avatar uri={avatar} size={104} verified />
+          <Text variant="display">{displayName}</Text>
           <VerifiedBadge label="ID verified" />
         </View>
 

@@ -1,48 +1,90 @@
+import { Ionicons } from '@expo/vector-icons';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
+import { StyleSheet, View } from 'react-native';
 
 import { Button, Card, Screen, StepProgress, Text } from '@/components/ui';
+import { thresholds } from '@/config';
 import { getIdentityProvider } from '@/lib/providers';
+import { useTheme } from '@/lib/theme';
+import { routeForStep, useOnboarding } from '@/state/onboarding';
 
 /**
  * Step 1 — Identity (Aadhaar via DigiLocker / Offline e-KYC). Spec §4.4.
  *
- * INTEGRATION POINT: IdentityProvider. In mock mode this returns a deterministic
- * verified identity used to PREFILL the profile (name/age/gender) — framing
- * verification as saving the user work, not just costing effort.
+ * Mock identity returns a deterministic verified identity; we PREFILL the
+ * profile from it and move on. The 18+ gate is enforced here too.
  *
- * LEGAL: confirm with counsel before production. Show the plain-language consent
- * screen (what we collect, why, how long, how to delete) before launching the
- * provider flow. NEVER store the full Aadhaar number or ID image (Spec §3).
+ * LEGAL: confirm with counsel before production. NEVER store the full Aadhaar
+ * number or ID image — only masked last-4 + a one-way hash (Spec §3).
  */
 export default function Identity() {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const phone = useOnboarding((s) => s.phone);
+  const setIdentity = useOnboarding((s) => s.setIdentity);
+  const setStep = useOnboarding((s) => s.setStep);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>();
 
-  async function onVerify() {
+  async function onConnect() {
+    setLoading(true);
+    setError(undefined);
     const identity = getIdentityProvider();
-    const started = await identity.startVerification({ phone: '+910000000000' });
-    if (!started.ok) return;
-    // Mock token; live mode supplies a DigiLocker code / signed e-KYC payload.
+    const started = await identity.startVerification({ phone: phone ?? '+910000000000' });
+    if (!started.ok) {
+      setError(started.message);
+      setLoading(false);
+      return;
+    }
     const result = await identity.confirmVerification({
       sessionId: started.data.sessionId,
       token: 'mock-consented-token',
     });
-    if (result.ok) {
-      // Phase 1: persist masked_aadhaar + aadhaar_hash, prefill profile draft.
-      router.push('/(onboarding)/liveness');
+    setLoading(false);
+    if (!result.ok) {
+      setError(result.message);
+      return;
     }
+    if (result.data.age < thresholds.minAgeYears) {
+      setError(t('onboarding.underageError'));
+      return;
+    }
+    setIdentity(result.data); // prefills name/age/gender
+    setStep('liveness');
+    router.push(routeForStep('liveness') as never);
   }
 
   return (
-    <Screen>
-      <StepProgress current={1} />
-      <Text variant="title">{t('onboarding.identityTitle')}</Text>
-      <Card>
+    <Screen scroll={false}>
+      <StepProgress current={3} />
+      <View style={styles.body}>
+        <Text variant="title">{t('onboarding.identityTitle')}</Text>
         <Text variant="body" color="textSecondary">
           {t('onboarding.identityBody')}
         </Text>
-      </Card>
-      <Button title={t('auth.continue')} onPress={onVerify} />
+        <Card>
+          <View style={styles.row}>
+            <Ionicons name="finger-print" size={22} color={theme.colors.accent} />
+            <Text variant="heading">DigiLocker</Text>
+          </View>
+          <Text variant="caption" color="textMuted">
+            {t('consent.legalNote')}
+          </Text>
+        </Card>
+        {error ? (
+          <Text variant="label" color="danger">
+            {error}
+          </Text>
+        ) : null}
+      </View>
+      <Button title={t('onboarding.connect')} loading={loading} onPress={onConnect} />
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  body: { gap: 14, marginTop: 8 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+});

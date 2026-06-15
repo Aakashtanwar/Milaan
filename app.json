@@ -40,7 +40,19 @@
       ],
       "expo-secure-store",
       "expo-dev-client",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Milaan uses your camera for a one-time live selfie to confirm you're a real person."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Milaan needs access to your photos so you can add verified profile pictures."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

@@ -6,4 +6,5 @@ export { IconButton, type IconButtonProps } from './IconButton';
 export { Screen, type ScreenProps } from './Screen';
 export { StepProgress } from './StepProgress';
 export { Text, type TextProps } from './Text';
+export { TextField, type TextFieldProps } from './TextField';
 export { VerifiedBadge } from './VerifiedBadge';

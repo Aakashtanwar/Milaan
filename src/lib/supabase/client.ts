@@ -9,8 +9,8 @@ import type { Database } from './database.types';
  * the same code points at the local stack in dev and a hosted project later
  * (Spec §12: secrets via env, never in the repo).
  *
- * In Phase 0 the session is mocked (see @/state/session) and this client is not
- * yet exercised for auth — it exists so Phase 1 can wire phone/OTP against it.
+ * Onboarding state is persisted locally (see @/state/onboarding); this client is
+ * the seam for wiring real Supabase phone/OTP + persistence in a later phase.
  */
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
 const anonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
