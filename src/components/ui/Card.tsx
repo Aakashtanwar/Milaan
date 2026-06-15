@@ -20,8 +20,11 @@ export function Card({ children, elevated = true, style, ...rest }: CardProps) {
           borderRadius: theme.radii.lg,
           padding: theme.spacing.lg,
           gap: theme.spacing.sm,
+          // Hairline border defines the lifted surface against the dark canvas.
+          borderWidth: 1,
+          borderColor: theme.colors.border,
         },
-        elevated ? theme.shadow.card : { borderWidth: 1, borderColor: theme.colors.border },
+        elevated ? theme.shadow.card : null,
         style,
       ]}
       {...rest}

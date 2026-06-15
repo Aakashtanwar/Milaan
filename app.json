@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "milaan",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "app.milaan.mobile",
@@ -31,7 +31,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F5821F",
+          "backgroundColor": "#100C0B",
           "android": {
             "image": "./assets/images/splash-icon.png",
             "imageWidth": 76

@@ -1,46 +1,46 @@
 /**
  * Milaan design tokens — the single source of truth for color, type, spacing.
  *
- * Direction: Hinge-style premium. Light, warm, editorial. A serif display face
- * (Fraunces) paired with a clean geometric sans (DM Sans). Restraint over
- * decoration — the photos and typography carry the product, not chrome.
+ * Direction: "Midnight Editorial". A warm near-black canvas, ivory serif
+ * display (Fraunces) and one deep-crimson accent. Photos glow against the dark;
+ * mature, intimate, premium — the opposite of a bright swipe app.
  */
 
-/** Warm, editorial palette. One confident accent; meaning-carrying action hues. */
+/** Dark, editorial palette. Warm near-black grounds (never pure black). */
 export const palette = {
-  // Warm paper grounds (never flat white, never cream-card-on-cream)
-  paper: '#FBF7F2',
-  paperDim: '#F3ECE2',
-  surface: '#FFFFFF',
+  // Warm near-black grounds + lifted surfaces
+  canvas: '#100C0B',
+  surface: '#1B1513',
+  surfaceAlt: '#241C19',
+  hairline: '#352B26',
 
-  // Warm near-black ink + greys (text never pure black)
-  ink: '#1E1B17',
-  ink70: '#5C554C',
-  ink50: '#8A8278',
-  ink30: '#BDB6AC',
-  hairline: '#EBE3D8',
+  // Ivory text (warm off-white, never pure white)
+  ivory: '#F4EDE4',
+  ivory70: '#B7ACA0',
+  ivory50: '#8B8076',
+  ivory30: '#5E554E',
 
-  // Brand accent — refined terracotta-saffron (India-warm, not neon)
-  accent: '#E2552E',
-  accentDeep: '#C2421F',
-  accentSoft: '#FBE7DD',
+  // Brand accent — deep crimson
+  crimson: '#C8364B',
+  crimsonDeep: '#9E2233',
+  crimsonSoft: '#2A1418',
 
-  // Marigold — secondary warmth (chips, highlights)
-  marigold: '#F2A93B',
-  marigoldSoft: '#FDF0D9',
+  // Gold — secondary warmth, used sparingly
+  gold: '#C9A24B',
+  goldSoft: '#241C12',
 
-  // Action hues (dating-app semantics)
-  like: '#16B364', // ♥ like — fresh green
-  likeSoft: '#DAF5E6',
-  nope: '#5C554C', // ✕ pass — neutral ink
-  star: '#3A8DFF', // ★ super-like — blue
-  starSoft: '#E1EEFF',
+  // Action hues (on dark)
+  like: '#36C98D', // ♥ like — luminous green
+  likeSoft: '#11251D',
+  nope: '#CABFB4', // ✕ pass — light neutral (visible on dark)
+  star: '#5AA2FF', // ★ super-like — blue
+  starSoft: '#101A2A',
 
   // Verified motif
-  verified: '#16B364',
+  verified: '#36C98D',
 
   // States
-  danger: '#E5484D',
+  danger: '#E5556A',
   white: '#FFFFFF',
 } as const;
 
